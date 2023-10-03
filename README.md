@@ -23,8 +23,9 @@
 
 1. Install Python 3.
 2. Navigate to the project directory (`autotetris`).
-3. Run the game with AI by executing: `python game.py`
-4. Run the game without AI by navigating to the `without_ai` directory and executing: `python game.py`
+3. Install the requirements
+4. Run the game with AI by executing: `python game.py`
+5. Run the game without AI by navigating to the `without_ai` directory and executing: `python game.py`
 
 ## AI Heuristics
 
