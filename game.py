@@ -149,7 +149,7 @@ def spawn_new_tetrimino():
         return False  # Game over
     return True
 
-pygame.mixer.music.load('D:\\code\\AI\\tetris2\\music\\techno-tetris-theme.mp3')
+pygame.mixer.music.load('music\\techno-tetris-theme.mp3')
 pygame.mixer.music.play(-1)
 
 def draw_next_tetrimino(screen):
