@@ -1,6 +1,28 @@
 #Hello tetris_ai.py
-from game_defs import rotate_matrix
-from game_defs import check_collision
+from tetris import Tetris
+
+tetris_game = Tetris()
+
+# Board
+#board_width = 10
+#board_height = 20
+#board = [[0 for _ in range(board_width)] for _ in range(board_height)]
+
+def rotate_matrix(matrix):  
+    return [[matrix[y][x]  
+            for y in range(len(matrix))]  
+            for x in range(len(matrix[0]) - 1, -1, -1)]
+
+def check_collision(x, y, piece, board):  
+    for i, row in enumerate(piece):  
+        for j, cell in enumerate(row):  
+            if cell:  
+                if x + j < 0 or x + j >= len(board[0]) or \
+                   y + i < 0 or y + i >= len(board) or \
+                   board[y + i][x + j] != 0:
+                    return True  
+    return False  
+
 
 def aggregate_height(board):
     height_sum = 0
@@ -55,7 +77,7 @@ def best_move(board, tetrimino):
   
     # Generate all possible rotations of the tetrimino  
     for _ in range(3):  
-        rotations.append(rotate_matrix(rotations[-1]))  
+        rotations.append(rotate_matrix(rotations[-1]))
   
     for rotation_index, rotated_tetrimino in enumerate(rotations):  
         for x in range(len(board[0]) - len(rotated_tetrimino[0]) + 1):  # Ensure tetrimino fits within board width  
@@ -63,11 +85,11 @@ def best_move(board, tetrimino):
   
             # Check if the move is valid before proceeding  
             y = 0  
-            if check_collision(x, y, rotated_tetrimino):  
-                continue  # Skip this move if it's not valid  
+            if check_collision(x, y, rotated_tetrimino, board):  
+                continue
               
             # Find the drop position for the tetrimino  
-            while not check_collision(x, y + 1, rotated_tetrimino):  # Drop tetrimino until collision  
+            while not check_collision(x, y + 1, rotated_tetrimino, board):
                 y += 1  
   
             # Place the tetrimino on the temp board  
