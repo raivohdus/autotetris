@@ -1,4 +1,3 @@
-
 # Board
 board_width = 10
 board_height = 20

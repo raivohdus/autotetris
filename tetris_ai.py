@@ -1,7 +1,6 @@
 #Hello tetris_ai.py
 from game_defs import rotate_matrix
 from game_defs import check_collision
-#from game_defs import extra_rows
 
 def aggregate_height(board):
     height_sum = 0
