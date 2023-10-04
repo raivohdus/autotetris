@@ -16,7 +16,6 @@ def check_collision(x, y, piece, board):
                     return True  
     return False  
 
-
 def aggregate_height(board):
     height_sum = 0
     for col in range(len(board[0])):
@@ -61,44 +60,63 @@ def evaluate_board(board):
     a, b, c, d = -0.5, 0.75, -0.35, -0.18  # Example weights, can be adjusted
     return a * aggregate_height(board) + b * complete_lines(board) + c * holes(board) + d * bumpiness(board)
 
-def best_move(board, tetrimino):  
-    # Evaluate all possible moves of the tetrimino on the board.  
-    # Return the best rotation and position (x-coordinate) for the tetrimino.  
-    best_score = float('-inf')  # Start with the worst possible score  
-    best_position = (0, 0)  # (x, rotation)  
-    rotations = [tetrimino]  # Starting rotation  
-  
-    # Generate all possible rotations of the tetrimino  
-    for _ in range(3):  
-        rotations.append(rotate_matrix(rotations[-1]))
-  
-    for rotation_index, rotated_tetrimino in enumerate(rotations):  
-        for x in range(len(board[0]) - len(rotated_tetrimino[0]) + 1):  # Ensure tetrimino fits within board width  
-            temp_board = [row[:] for row in board]  # Deep copy of the board  
-  
-            # Check if the move is valid before proceeding  
-            y = 0  
-            if check_collision(x, y, rotated_tetrimino, board):  
-                continue
-              
-            # Find the drop position for the tetrimino  
-            while not check_collision(x, y + 1, rotated_tetrimino, board):
-                y += 1  
-  
-            # Place the tetrimino on the temp board  
-            for i, row in enumerate(rotated_tetrimino):  
-                for j, cell in enumerate(row):  
-                    if cell:  
-                        temp_board[y + i][x + j] = 1  
-  
-            # Evaluate the board state  
-            score = evaluate_board(temp_board)  
-            if score > best_score:  
-                best_score = score  
-                best_position = (x, rotation_index)  
+def best_move(board, current_tetrimino, next_tetrimino):
+    best_score = float('-inf')  # Start with the worst possible score
+    best_position = (0, 0)  # (x, rotation)
 
-    print ("best position: ", best_position)
+    # Get all possible moves for the current tetrimino
+    for curr_x, curr_rotation in possible_moves(board, current_tetrimino):
+        temp_board = place_tetrimino(board, current_tetrimino, curr_x, curr_rotation)
+
+        # For the resultant board, get all possible moves for the next tetrimino
+        next_best_score = max(evaluate_board(place_tetrimino(temp_board, next_tetrimino, next_x, next_rotation))
+                              for next_x, next_rotation in possible_moves(temp_board, next_tetrimino))
+
+        # Combine scores
+        combined_score = evaluate_board(temp_board) + next_best_score
+
+        if combined_score > best_score:
+            best_score = combined_score
+            best_position = (curr_x, curr_rotation)
+
     return best_position
+
+def possible_moves(board, tetrimino):
+    # This function returns all possible (x, rotation) for the given tetrimino on the board
+    possible_positions = []
+
+    rotations = [tetrimino]  # Starting rotation
+    for _ in range(3):  # Generate all possible rotations of the tetrimino
+        rotations.append(rotate_matrix(rotations[-1]))
+
+    for rotation_index, rotated_tetrimino in enumerate(rotations):
+        for x in range(len(board[0]) - len(rotated_tetrimino[0]) + 1):  # Ensure tetrimino fits within board width
+            y = 0
+            if check_collision(x, y, rotated_tetrimino, board):
+                continue
+            possible_positions.append((x, rotation_index))
+
+    return possible_positions
+
+def place_tetrimino(board, tetrimino, x, rotation):
+    # This function places the tetrimino on the board and returns the resultant board
+    temp_board = [row[:] for row in board]  # Deep copy of the board
+
+    rotated_tetrimino = tetrimino
+    for _ in range(rotation):  # Apply rotation
+        rotated_tetrimino = rotate_matrix(rotated_tetrimino)
+
+    y = 0  # Find the drop position for the tetrimino
+    while not check_collision(x, y + 1, rotated_tetrimino, board):
+        y += 1
+
+    # Place the tetrimino on the temp board
+    for i, row in enumerate(rotated_tetrimino):
+        for j, cell in enumerate(row):
+            if cell:
+                temp_board[y + i][x + j] = 1
+
+    return temp_board
 
 if __name__ == "__main__":
     # Mock board with a hole and bumpiness

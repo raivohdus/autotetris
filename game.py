@@ -97,6 +97,11 @@ def draw_score(screen):
     screen.blit(high_score_text, (x_position, 60))
     screen.blit(difficulty_text, (x_position, 90))
 
+def draw_cleared_rows(screen):
+    cleared_rows_text = font.render(f"Cleared Rows: {tetris_game.cleared_rows_count}", True, (255, 255, 255))
+    x_position = tetris_game.board_width * 20 + 10
+    screen.blit(cleared_rows_text, (x_position, 250))
+
 def draw_boundaries(screen):
     block_size = 20
     top_left = (0, 0)
@@ -121,7 +126,7 @@ def save_high_score(new_high_score):
         file.write(str(new_high_score))
 
 # Game loop
-base_gravity_timer_threshold = 0.3  # initial value for the gravity timer threshold
+base_gravity_timer_threshold = 0.05  # initial value for the gravity timer threshold
 gravity_timer = 0
 high_score = load_high_score()
 tetris_game.spawn_new_tetrimino()
@@ -138,8 +143,10 @@ try:
             if event.type == pygame.QUIT:  
                 running = False  
   
-        if not ai_move_made:  
-            x_position, rotation = best_move(tetris_game.board, tetris_game.tetriminos[tetris_game.current_tetrimino])  
+        if not ai_move_made:
+            current_piece = tetris_game.tetriminos[tetris_game.current_tetrimino]
+            next_piece = tetris_game.tetriminos[tetris_game.next_tetrimino]
+            x_position, rotation = best_move(tetris_game.board, current_piece, next_piece) 
   
             # Apply the AI's suggested x-position    
             while tetris_game.current_position[0] < x_position:    
@@ -180,11 +187,12 @@ try:
         draw_board(screen)  
         draw_tetrimino(screen, tetris_game.current_position, tetris_game.tetriminos[tetris_game.current_tetrimino])  
         draw_score(screen)  
+        draw_cleared_rows(screen)  # Call the new function
         draw_boundaries(screen)  
         draw_next_tetrimino(screen)  
   
         pygame.display.flip()  
-        clock.tick(60)  
+        clock.tick(120)  
   
 except Exception as e:  
     print(f"Error occurred: {e}")  
