@@ -1,4 +1,4 @@
-#Hello tetris_ai.py
+#tetris_ai.py
 from tetris import Tetris
 
 def rotate_matrix(matrix):  
@@ -57,7 +57,7 @@ def bumpiness(board):
 
 def evaluate_board(board):
     # Use the heuristics to compute a score for the board.
-    a, b, c, d = -0.5, 0.75, -0.35, -0.18  # Example weights, can be adjusted
+    a, b, c, d = -0.8, 0.75, -1.75, -0.25  # Example weights, can be adjusted
     return a * aggregate_height(board) + b * complete_lines(board) + c * holes(board) + d * bumpiness(board)
 
 def best_move(board, current_tetrimino, next_tetrimino):

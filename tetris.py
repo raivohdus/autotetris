@@ -1,3 +1,4 @@
+#tetris.py
 import random
 
 class Tetris:  
@@ -71,7 +72,7 @@ class Tetris:
   
     # Add other game methods (e.g., move_piece, rotate_piece, etc.) as class methods  
     def move_piece(self, dx, dy, ignore_collision=False):  
-    # Compute the new position      
+        # Compute the new position      
         new_x = self.current_position[0] + dx      
         new_y = self.current_position[1] + dy      
             
@@ -79,40 +80,31 @@ class Tetris:
         if not self.check_collision(new_x, new_y, self.tetriminos[self.current_tetrimino]) or ignore_collision:      
             self.current_position = (new_x, new_y)      
         else:      
+            print(f"Illegal move attempted at position ({new_x}, {new_y}) with tetrimino {self.current_tetrimino}")  # Debugging printout
             if dy == 1:  # If it's a downwards move and there's a collision      
                 self.place_piece()    
                 self.clear_lines()    
                 if not self.spawn_new_tetrimino():    
                     return False  # Game over  
+                #print(f"Tetrimino placed at position ({new_x}, {new_y}) with tetrimino {self.current_tetrimino}")  # Debugging printout
                 return True  # Tetrimino was placed    
         return None  # Tetrimino was not placed, game continues  
 
-    
     def rotate_piece(self):
-                # Rotate the tetrimino
+        # Rotate the tetrimino
         rotated = self.rotate_matrix(self.tetriminos[self.current_tetrimino])
 
         if not self.check_collision(self.current_position[0], self.current_position[1], rotated):
             self.tetriminos[self.current_tetrimino] = rotated
-        #else:
-        #    print(f"Illegal rotation attempted at position {self.current_position} with tetrimino {current_tetrimino}")
+        else:
+            print(f"Illegal rotation attempted at position {self.current_position} with tetrimino {self.current_tetrimino}")
 
-      
     def place_piece(self):
-        self.board
-
         for i, row in enumerate(self.tetriminos[self.current_tetrimino]):
             for j, cell in enumerate(row):
                 if cell:
                     self.board[self.current_position[1] + i][self.current_position[0] + j] = 1
-
-
-    def hard_drop(self):
-        dy = 1
-        while not self.check_collision(self.current_position[0], self.current_position[1] + dy, self.tetriminos[self.current_tetrimino]):
-            dy += 1
-        self.move_piece(0, dy - 1)  # Move the tetrimino down by dy - 1 units
-
+        #print(f"Piece placed on the board at position {self.current_position} with tetrimino {self.current_tetrimino}")  # Debugging printout
 
     def clear_lines(self):
 

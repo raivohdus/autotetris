@@ -1,3 +1,4 @@
+#game.py
 import pygame
 import sys
 import random
@@ -147,16 +148,16 @@ try:
             current_piece = tetris_game.tetriminos[tetris_game.current_tetrimino]
             next_piece = tetris_game.tetriminos[tetris_game.next_tetrimino]
             x_position, rotation = best_move(tetris_game.board, current_piece, next_piece) 
+
+            # Apply the AI's suggested rotation  
+            for _ in range(rotation):  
+                tetris_game.rotate_piece()  
   
             # Apply the AI's suggested x-position    
             while tetris_game.current_position[0] < x_position:    
                 tetris_game.move_piece(1, 0, ignore_collision=True)    
             while tetris_game.current_position[0] > x_position:    
                 tetris_game.move_piece(-1, 0, ignore_collision=True)    
-              
-            # Apply the AI's suggested rotation  
-            for _ in range(rotation):  
-                tetris_game.rotate_piece()  
               
             ai_move_made = True  
   
@@ -192,11 +193,12 @@ try:
         draw_next_tetrimino(screen)  
   
         pygame.display.flip()  
-        clock.tick(120)  
+        clock.tick(480)  
   
 except Exception as e:  
     print(f"Error occurred: {e}")  
     # Optionally, print the current tetris_game.board state or any other relevant information here  
 
+print(f"Game over. Your score is {tetris_game.score}.")
 pygame.quit()
 sys.exit()
