@@ -1,13 +1,6 @@
 #Hello tetris_ai.py
 from tetris import Tetris
 
-tetris_game = Tetris()
-
-# Board
-#board_width = 10
-#board_height = 20
-#board = [[0 for _ in range(board_width)] for _ in range(board_height)]
-
 def rotate_matrix(matrix):  
     return [[matrix[y][x]  
             for y in range(len(matrix))]  

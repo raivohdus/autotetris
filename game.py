@@ -60,16 +60,6 @@ def draw_next_tetrimino(screen):
             if cell:
                 pygame.draw.rect(screen, color, (x_position + x * block_size, y_position + y * block_size, block_size, block_size))
 
-def draw_next_tetrimino_boundaries(screen):
-    block_size = 20
-    x_position = tetris_game.board_width * block_size + 30
-    y_position = 160
-    width = max([len(row) for row in tetris_game.tetriminos[tetris_game.next_tetrimino]]) * block_size
-    height = len(tetris_game.tetriminos[tetris_game.next_tetrimino]) * block_size
-
-    # Draw the boundaries
-    pygame.draw.rect(screen, (255, 255, 255), (x_position - 5, y_position - 25, width + 10, height + 30), 2)
-
 #Draw Static blocks (optional for AI)
 def draw_board(screen):
     for y, row in enumerate(tetris_game.board):
@@ -192,7 +182,6 @@ try:
         draw_score(screen)  
         draw_boundaries(screen)  
         draw_next_tetrimino(screen)  
-        draw_next_tetrimino_boundaries(screen)  
   
         pygame.display.flip()  
         clock.tick(60)  

@@ -43,12 +43,6 @@ class Tetris:
         self.cleared_rows_count = 0  # Keep this line  
         self.score = 0  # Add this line    
   
-    def rotate_matrix(self, matrix):  
-        # Return the rotated matrix  
-        return [[matrix[y][x]  
-                for y in range(len(matrix))]  
-                for x in range(len(matrix[0]) - 1, -1, -1)]  
-  
     def check_collision(self, x, y, piece):  
         for i, row in enumerate(piece):  
             for j, cell in enumerate(row):  
@@ -114,7 +108,6 @@ class Tetris:
 
 
     def hard_drop(self):
-        global current_position
         dy = 1
         while not self.check_collision(self.current_position[0], self.current_position[1] + dy, self.tetriminos[self.current_tetrimino]):
             dy += 1
@@ -122,7 +115,6 @@ class Tetris:
 
 
     def clear_lines(self):
-        global board, score, cleared_rows_count
 
         lines_cleared = 0
         lines_to_clear = [i for i, row in enumerate(self.board) if all(cell != 0 for cell in row)]
