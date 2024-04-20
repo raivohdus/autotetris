@@ -57,7 +57,7 @@ def bumpiness(board):
 
 def evaluate_board(board):
     # Use the heuristics to compute a score for the board.
-    a, b, c, d = -0.8, 0.75, -1.75, -0.25  # Example weights, can be adjusted
+    a, b, c, d, e = -2.7380367170543, 8.742855726071653, -9.53320698834055, -5.759296551649347, 3.6049141455941207  # Example weights, can be adjusted
     return a * aggregate_height(board) + b * complete_lines(board) + c * holes(board) + d * bumpiness(board)
 
 def best_move(board, current_tetrimino, next_tetrimino):
