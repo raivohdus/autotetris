@@ -80,7 +80,7 @@ class Tetris:
         if not self.check_collision(new_x, new_y, self.tetriminos[self.current_tetrimino]) or ignore_collision:      
             self.current_position = (new_x, new_y)      
         else:      
-            print(f"Illegal move attempted at position ({new_x}, {new_y}) with tetrimino {self.current_tetrimino}")  # Debugging printout
+            #print(f"Illegal move attempted at position ({new_x}, {new_y}) with tetrimino {self.current_tetrimino}")  # Debugging printout
             if dy == 1:  # If it's a downwards move and there's a collision      
                 self.place_piece()    
                 self.clear_lines()    
