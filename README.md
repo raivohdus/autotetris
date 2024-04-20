@@ -19,6 +19,9 @@
 - **without_ai/**  
   Contains a version of the Tetris game without the AI implementation.
 
+- **learner/**  
+  Contains a version of the Tetris game which can be used to run the genetic algorithm which searches for best possible heuristics. Low performance but gets the job done. Requires patience. :D
+
 ## How to Run
 
 1. Install Python 3.
